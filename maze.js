@@ -34,8 +34,10 @@ const rectangle = (x,y,w,h, state) => {
         ctx.fillStyle = '#AAAAAA'
     } else if (state == 'w') {
         ctx.fillStyle = '#0000FF'
+    } else if (state == 'x') {
+        ctx.fillStyle = '#000000'
     } else {
-        ctx.fillStyle = '#AAAAAA'
+        ctx.fillStyle = '#FFFF00'
     }
     
     ctx.beginPath()
@@ -113,7 +115,100 @@ const myUp = () => {
     canvas.onmousemove = null
 }
 
+const solveMaze = () => {
+    // Where we are exploring from
+    let xQue = [0]
+    let yQue = [0]
 
+    let pathFound = false
+
+    let xLoc
+    let yLoc
+
+
+    while (xQue.length> 0 && !pathFound) {
+        xLoc = xQue.shift()
+        yLoc = yQue.shift()
+
+        // Check if end is next to current node
+        if (xLoc > 0) {
+            if (tiles[xLoc-1][yLoc].state == 'f') {
+                pathFound = true
+            }
+        }
+        if (xLoc < titleColumnCount - 1) {
+            if (tiles[xLoc+1][yLoc].state == 'f') {
+                pathFound = true
+            }
+        }
+        if (yLoc > 0) {
+            if (tiles[xLoc][yLoc-1].state == 'f') {
+                pathFound = true
+            }
+        }
+        if (yLoc < titleRowCount - 1) {
+            if (tiles[xLoc][yLoc+1].state == 'f') {
+                pathFound = true
+            }
+        }
+
+
+        if (xLoc > 0) {
+            if (tiles[xLoc-1][yLoc].state == 'e') {
+                xQue.push(xLoc-1)
+                yQue.push(yLoc)
+                tiles[xLoc-1][yLoc].state = tiles[xLoc][yLoc].state + 'l'
+            }
+        }
+        if (xLoc < titleColumnCount - 1) {
+            if (tiles[xLoc+1][yLoc].state == 'e') {
+                xQue.push(xLoc+1)
+                yQue.push(yLoc)
+                tiles[xLoc+1][yLoc].state = tiles[xLoc][yLoc].state + 'r'
+            }
+        }
+        if (yLoc > 0) {
+            if (tiles[xLoc][yLoc-1].state == 'e') {
+                xQue.push(xLoc)
+                yQue.push(yLoc-1)
+                tiles[xLoc][yLoc-1].state = tiles[xLoc][yLoc].state + 'u'
+            }
+        }
+        if (yLoc < titleRowCount - 1) {
+            if (tiles[xLoc][yLoc+1].state == 'e') {
+                xQue.push(xLoc)
+                yQue.push(yLoc+1)
+                tiles[xLoc][yLoc+1].state = tiles[xLoc][yLoc].state + 'd'
+            }
+        }
+    }
+
+    if (!pathFound) {
+        output.innerHTML = 'No solution'
+    } else {
+        output.innerHTML = 'Solved'
+        let path = tiles[xLoc][yLoc].state
+        let pathLength = path.length
+        let curX = 0
+        let curY = 0
+        for (i = 0; i < pathLength - 1; i++) {
+            if (path.charAt(i+1) == 'u') {
+                curY -= 1
+            }
+            if (path.charAt(i+1) == 'd') {
+                curY += 1
+            }
+            if (path.charAt(i+1) == 'r') {
+                curX += 1
+            }
+            if (path.charAt(i+1) == 'l') {
+                curX -= 1
+            }
+            tiles[curX][curY].state = 'x'
+        }
+    }
+
+}
 
 const reset = () => {
     for (c = 0; c < titleColumnCount; c++) {
