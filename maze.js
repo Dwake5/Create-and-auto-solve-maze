@@ -1,5 +1,6 @@
 let canvas 
 let ctx 
+let output
 
 const width = 1200
 const height = 800
@@ -10,7 +11,7 @@ const tileH = 20
 const titleRowCount = 25
 const titleColumnCount = 40
 
-let dragok = false
+// let dragok = false
 let boundX 
 let boundY 
 
@@ -60,6 +61,7 @@ const draw = () => {
 const init = () => {
     canvas = document.getElementById('myCanvas')
     ctx = canvas.getContext('2d')
+    output = document.getElementById('outcome')
     return setInterval(draw, 10)
 }
 
@@ -109,6 +111,21 @@ const myDown = e => {
 
 const myUp = () => {
     canvas.onmousemove = null
+}
+
+
+
+const reset = () => {
+    for (c = 0; c < titleColumnCount; c++) {
+        tiles[c] = []
+        for (r = 0; r < titleRowCount; r++) {
+            tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+        }
+    }
+    tiles[0][0].state = 's'
+    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+
+    output.innerHTML = ''
 }
 
 init()
