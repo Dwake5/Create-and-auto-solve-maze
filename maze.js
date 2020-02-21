@@ -11,7 +11,6 @@ const tileH = 20
 const titleRowCount = 25
 const titleColumnCount = 40
 
-// let dragok = false
 let boundX 
 let boundY 
 
@@ -116,6 +115,7 @@ const myUp = () => {
 }
 
 const solveMaze = () => {
+    let t0 = performance.now()
     // Where we are exploring from
     let xQue = [0]
     let yQue = [0]
@@ -186,7 +186,7 @@ const solveMaze = () => {
     if (!pathFound) {
         output.innerHTML = 'No solution'
     } else {
-        output.innerHTML = 'Solved'
+        output.innerHTML = 'Solved!'
         let path = tiles[xLoc][yLoc].state
         let pathLength = path.length
         let curX = 0
@@ -207,7 +207,6 @@ const solveMaze = () => {
             tiles[curX][curY].state = 'x'
         }
     }
-
 }
 
 const reset = () => {

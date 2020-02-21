@@ -45,13 +45,30 @@
     align-items: center;
 }
 
-
-
-
 .box {
     margin-right: 5px;
+}
+
+.raise:hover,
+.raise:focus {
+    box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+    transform: translateY(-0.25em);
+}
+
+
+button {
+    box-shadow: 2px 2px grey;
+}
+
+
+button {
+    border: 1px solid black;
+    background-color: white;
+    font-size: 15px;
+    margin-right: 10px;
 }
 
 p {
     margin-right: 20px;
 }
+

@@ -9,30 +9,30 @@
     <div id='container'>
         <div id='greenBox' class='box'>
         </div>
-        <p>= start</p>
+        <p>= Start</p>
         <div id='redBox' class='box'>
         </div>
-        <p>= end</p>
+        <p>= End</p>
         <div id='blueBox' class='box'>
         </div>
-        <p>= wall</p>
+        <p>= Wall</p>
         <div id='blackBox' class='box'>
         </div>
-        <p>= optimal path</p>
+        <p>= Optimal path</p>
         <div id='yellowBox' class='box'>
         </div>
-        <p>= path checked</p>
+        <p>= Path checked</p>
         <div id='greyBox' class='box'>
         </div>
-        <p>= blank cell</p>
+        <p>= Blank cell</p>
     </div>
     
     
     <canvas id='myCanvas' width='1000' height = '600'></canvas>
     <div> 
-        <button onclick = 'solveMaze()'>Solve</button>
-        <button onclick = 'reset()'>Reset</button>
-        <button onclick = 'resetNotWalls()'>Reset, but leave walls</button>
+        <button class ='raise button' onclick = 'solveMaze()'>Solve</button>
+        <button class ='raise' onclick = 'reset()'>Reset</button>
+        <button class ='raise' onclick = 'resetNotWalls()'>Reset, but leave walls</button>
     </div>
    
     <p id='outcome'></p>
