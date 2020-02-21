@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <h1> Maze solver </h1>
     <div id='container'>
         <div id='greenBox' class='box'>
         </div>
@@ -30,9 +31,17 @@
     
     <canvas id='myCanvas' width='1000' height = '600'></canvas>
     <div> 
-        <button class ='raise button' onclick = 'solveMaze()'>Solve</button>
+        <button class ='raise' onclick = 'solveMaze()'>Solve</button>
         <button class ='raise' onclick = 'reset()'>Reset</button>
         <button class ='raise' onclick = 'resetNotWalls()'>Reset, but leave walls</button>
+        <button class ='raise' onclick = 'randomFill(25)'>Randomly fill the grid</button>
+        <select id="fillPercent">
+            <option value="20">20%</option>
+            <option value="25">25%</option>
+            <option value="30">30%</option>
+            <option value="35">35%</option>
+            <option value="40">40%</option>
+        </select>
     </div>
    
     <p id='outcome'></p>

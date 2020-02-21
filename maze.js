@@ -237,6 +237,24 @@ const resetNotWalls = () => {
     output.innerHTML = ''
 }
 
+const randomFill = () => {
+    let fillPercent = document.getElementById('fillPercent')
+    let fill = fillPercent.options[fillPercent.selectedIndex].value
+    for (c = 0; c < titleColumnCount; c++) {
+        for (r = 0; r < titleRowCount; r++) {
+            if (Math.random()*100>(100-fill))  {
+                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'w'}
+            } else {
+                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+            }
+        }
+    }
+    tiles[0][0].state = 's'
+    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+
+    output.innerHTML = ''
+}
+
 init()
 canvas.onmousedown = myDown
 canvas.onmouseup = myUp
