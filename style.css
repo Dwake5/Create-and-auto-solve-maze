@@ -1,0 +1,57 @@
+#greenBox {
+    background-color: #00FF00;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#redBox {
+    background-color: #FF0000;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#blueBox {
+    background-color: #0000FF;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#blackBox {
+    background-color: #000000;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#greyBox {
+    background-color: #AAAAAA;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#yellowBox {
+    background-color: #FFFF00;
+    height: 12px;
+    width: 12px;
+    border: 1px solid black
+}
+
+#container {
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+.box {
+    margin-right: 5px;
+}
+
+p {
+    margin-right: 20px;
+}

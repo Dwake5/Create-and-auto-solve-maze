@@ -3,11 +3,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Draw and auto-solve a maze.</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div id='container'>
+        <div id='greenBox' class='box'>
+        </div>
+        <p>= start</p>
+        <div id='redBox' class='box'>
+        </div>
+        <p>= end</p>
+        <div id='blueBox' class='box'>
+        </div>
+        <p>= wall</p>
+        <div id='blackBox' class='box'>
+        </div>
+        <p>= optimal path</p>
+        <div id='yellowBox' class='box'>
+        </div>
+        <p>= path checked</p>
+        <div id='greyBox' class='box'>
+        </div>
+        <p>= blank cell</p>
+    </div>
+    
+    
     <canvas id='myCanvas' width='1000' height = '600'></canvas>
-    <button onclick = 'solveMaze()'>Solve</button>
-    <button onclick = 'reset()'>Reset</button>
+    <div> 
+        <button onclick = 'solveMaze()'>Solve</button>
+        <button onclick = 'reset()'>Reset</button>
+        <button onclick = 'resetNotWalls()'>Reset, but leave walls</button>
+    </div>
+   
     <p id='outcome'></p>
     <script src='maze.js'></script>
 </body>

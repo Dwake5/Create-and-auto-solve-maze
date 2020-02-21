@@ -212,9 +212,24 @@ const solveMaze = () => {
 
 const reset = () => {
     for (c = 0; c < titleColumnCount; c++) {
-        tiles[c] = []
         for (r = 0; r < titleRowCount; r++) {
             tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+        }
+    }
+    tiles[0][0].state = 's'
+    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+
+    output.innerHTML = ''
+}
+
+const resetNotWalls = () => {
+    for (c = 0; c < titleColumnCount; c++) {
+        for (r = 0; r < titleRowCount; r++) {
+            if (tiles[c][r].state == 'w')  {
+                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'w'}
+            } else {
+                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+            }
         }
     }
     tiles[0][0].state = 's'
