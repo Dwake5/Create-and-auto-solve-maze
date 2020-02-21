@@ -115,7 +115,6 @@ const myUp = () => {
 }
 
 const solveMaze = () => {
-    let t0 = performance.now()
     // Where we are exploring from
     let xQue = [0]
     let yQue = [0]
@@ -249,10 +248,16 @@ const randomFill = () => {
             }
         }
     }
+    // Leave the start and exit empty, to increase chance's
+    tiles[0][1].state='e'
+    tiles[1][0].state='e'
+    tiles[38][24].state='e'
+    tiles[39][23].state='e'
+
     tiles[0][0].state = 's'
     tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
 
-    output.innerHTML = ''
+    output.innerHTML = `Grid filled with ${fill}% walls`
 }
 
 init()
