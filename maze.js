@@ -161,7 +161,7 @@ const solveMaze = () => {
         }
 
         // Current tile is not next to exit, so check next to it for future paths.
-        // So that previous paths arent also checked in a cycle, a letter is appended to them.
+        // So that previous paths arent also checked in a cycle and so that a path can be coloured, a letter is appended to them.
         // 'l','r','u', or 'd'
         if (xLoc > 0) {
             if (tiles[xLoc-1][yLoc].state == 'e') {
@@ -198,21 +198,23 @@ const solveMaze = () => {
         output.innerHTML = 'No solution'
     } else {
         output.innerHTML = 'Solved!'
+        console.log(tiles[xLoc][yLoc].state)
         let path = tiles[xLoc][yLoc].state
         let pathLength = path.length
+
         let curX = 0
         let curY = 0
-        for (i = 0; i < pathLength - 1; i++) {
-            if (path.charAt(i+1) == 'u') {
+        for (i = 1; i < pathLength; i++) {
+            if (path.charAt(i) == 'u') {
                 curY -= 1
             }
-            if (path.charAt(i+1) == 'd') {
+            if (path.charAt(i) == 'd') {
                 curY += 1
             }
-            if (path.charAt(i+1) == 'r') {
+            if (path.charAt(i) == 'r') {
                 curX += 1
             }
-            if (path.charAt(i+1) == 'l') {
+            if (path.charAt(i) == 'l') {
                 curX -= 1
             }
             tiles[curX][curY].state = 'x'
