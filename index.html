@@ -2,11 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draw and auto-solve a maze.</title>
+    <title>Draw and auto-solve a maze</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
-    <h1> Maze solver </h1>
+<body class='centered'>
+    <h1>Maze Solver</h1>
+    <p class='nobottom'>This is a 25 * 40 square grid, you can click to create walls or drag and hold to create multiple. When finished, click the solve button to see if it </p>
+    <p class='notop'>can be solved and showing you the best path. Alternatively select a fill percentage and randomly fill the grid.</p>
     <div id='container'>
         <div id='greenBox' class='box'>
         </div>
@@ -29,11 +31,10 @@
     </div>
     
     
-    <canvas id='myCanvas' width='1000' height = '600'></canvas>
-    <div> 
+    <canvas id='myCanvas' width='920' height = '575'></canvas>
+    <p id='outcome'>   </p>
+    <div class='bottomSpace'> 
         <button class ='raise' onclick = 'solveMaze()'>Solve</button>
-        <button class ='raise' onclick = 'reset()'>Reset</button>
-        <button class ='raise' onclick = 'resetNotWalls()'>Reset, but leave walls</button>
         <button class ='raise' onclick = 'randomFill(25)'>Randomly fill the grid</button>
         <select id="fillPercent">
             <option value="20">20%</option>
@@ -43,8 +44,11 @@
             <option value="40">40%</option>
         </select>
     </div>
+    <div>        
+        <button class ='raise' onclick = 'reset()'>Reset</button>
+        <button class ='raise' onclick = 'resetNotWalls()'>Reset, but leave walls</button>
+    </div>
    
-    <p id='outcome'></p>
     <script src='maze.js'></script>
 </body>
 </html>

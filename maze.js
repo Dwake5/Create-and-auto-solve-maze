@@ -1,28 +1,36 @@
 let canvas 
 let ctx 
 let output
-
+let checks = {}
 const width = 1200
 const height = 800
 
 const tileW = 20
 const tileH = 20
+const gap = 3
 
-const titleRowCount = 25
-const titleColumnCount = 40
+const tileRowCount = 25
+const tileColumnCount = 40
 
 let boundX 
 let boundY 
 
+// Tiles are altered based on there state.
+// e = empty (initial state)
+// w = wall 
+// s = start
+// f = finish
+// x = optimal path
+
 let tiles = []
-for (c = 0; c < titleColumnCount; c++) {
+for (c = 0; c < tileColumnCount; c++) {
     tiles[c] = []
-    for (r = 0; r < titleRowCount; r++) {
-        tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+    for (r = 0; r < tileRowCount; r++) {
+        tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'e'}
     }
 }
 tiles[0][0].state = 's'
-tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+tiles[tileColumnCount-1][tileRowCount-1].state = 'f'
 
 const rectangle = (x,y,w,h, state) => {
     if (state == 's') {
@@ -46,14 +54,14 @@ const rectangle = (x,y,w,h, state) => {
 }
 
 const clear = () => {
-    ctx.clearRect(0,0, width, height)
+    ctx.clearRect(0, 0, width, height)
 }
 
 const draw = () => {
     clear()
 
-    for (c = 0; c < titleColumnCount; c++) {
-        for (r = 0; r < titleRowCount; r++) {
+    for (c = 0; c < tileColumnCount; c++) {
+        for (r = 0; r < tileRowCount; r++) {
             rectangle(tiles[c][r].x, tiles[c][r].y, tileW, tileH, tiles[c][r].state)
         }
     }
@@ -70,9 +78,9 @@ const myMove = e => {
     x = e.pageX - canvas.offsetLeft
     y = e.pageY - canvas.offsetTop
 
-    for ( c = 0; c < titleColumnCount; c++) {
-        for ( r = 0; r < titleRowCount; r++) {
-            if (c*(tileW+3) < x && x < c*(tileW+3)+tileW && r*(tileH+3) < y && y < r*(tileH+3)+tileH) {
+    for ( c = 0; c < tileColumnCount; c++) {
+        for ( r = 0; r < tileRowCount; r++) {
+            if (c*(tileW + gap) < x && x < c*(tileW + gap)+tileW && r*(tileH + gap) < y && y < r*(tileH + gap)+tileH) {
                 if (tiles[c][r].state == 'e' && (c != boundX || r != boundY)) {
                     tiles[c][r].state = 'w'
                     boundX = c
@@ -93,9 +101,9 @@ const myDown = e => {
     x = e.pageX - canvas.offsetLeft
     y = e.pageY - canvas.offsetTop
 
-    for ( c = 0; c < titleColumnCount; c++) {
-        for ( r = 0; r < titleRowCount; r++) {
-            if (c*(tileW+3) < x && x < c*(tileW+3)+tileW && r*(tileH+3) < y && y < r*(tileH+3)+tileH) {
+    for (c = 0; c < tileColumnCount; c++) {
+        for (r = 0; r < tileRowCount; r++) {
+            if (c*(tileW + gap) < x && x < c*(tileW + gap)+tileW && r*(tileH + gap) < y && y < r*(tileH + gap)+tileH) {
                 if (tiles[c][r].state == 'e') {
                     tiles[c][r].state = 'w'
                     boundX = c
@@ -115,27 +123,28 @@ const myUp = () => {
 }
 
 const solveMaze = () => {
-    // Where we are exploring from
+    // Places to check
     let xQue = [0]
     let yQue = [0]
 
     let pathFound = false
-
+    
+    // Where we are exploring from
     let xLoc
     let yLoc
 
-
-    while (xQue.length> 0 && !pathFound) {
+    while (xQue.length > 0 && !pathFound) {
         xLoc = xQue.shift()
         yLoc = yQue.shift()
 
-        // Check if end is next to current node
+        // Check if finish point is next to current node
+        // left, right, up, down
         if (xLoc > 0) {
             if (tiles[xLoc-1][yLoc].state == 'f') {
                 pathFound = true
             }
         }
-        if (xLoc < titleColumnCount - 1) {
+        if (xLoc < tileColumnCount - 1) {
             if (tiles[xLoc+1][yLoc].state == 'f') {
                 pathFound = true
             }
@@ -145,13 +154,15 @@ const solveMaze = () => {
                 pathFound = true
             }
         }
-        if (yLoc < titleRowCount - 1) {
+        if (yLoc < tileRowCount - 1) {
             if (tiles[xLoc][yLoc+1].state == 'f') {
                 pathFound = true
             }
         }
 
-
+        // Current tile is not next to exit, so check next to it for future paths.
+        // So that previous paths arent also checked in a cycle, a letter is appended to them.
+        // 'l','r','u', or 'd'
         if (xLoc > 0) {
             if (tiles[xLoc-1][yLoc].state == 'e') {
                 xQue.push(xLoc-1)
@@ -159,7 +170,7 @@ const solveMaze = () => {
                 tiles[xLoc-1][yLoc].state = tiles[xLoc][yLoc].state + 'l'
             }
         }
-        if (xLoc < titleColumnCount - 1) {
+        if (xLoc < tileColumnCount - 1) {
             if (tiles[xLoc+1][yLoc].state == 'e') {
                 xQue.push(xLoc+1)
                 yQue.push(yLoc)
@@ -173,13 +184,14 @@ const solveMaze = () => {
                 tiles[xLoc][yLoc-1].state = tiles[xLoc][yLoc].state + 'u'
             }
         }
-        if (yLoc < titleRowCount - 1) {
+        if (yLoc < tileRowCount - 1) {
             if (tiles[xLoc][yLoc+1].state == 'e') {
                 xQue.push(xLoc)
                 yQue.push(yLoc+1)
                 tiles[xLoc][yLoc+1].state = tiles[xLoc][yLoc].state + 'd'
             }
         }
+        
     }
 
     if (!pathFound) {
@@ -206,32 +218,33 @@ const solveMaze = () => {
             tiles[curX][curY].state = 'x'
         }
     }
+
 }
 
 const reset = () => {
-    for (c = 0; c < titleColumnCount; c++) {
-        for (r = 0; r < titleRowCount; r++) {
-            tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+    for (c = 0; c < tileColumnCount; c++) {
+        for (r = 0; r < tileRowCount; r++) {
+            tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'e'}
         }
     }
     tiles[0][0].state = 's'
-    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+    tiles[tileColumnCount-1][tileRowCount-1].state = 'f'
 
     output.innerHTML = ''
 }
 
 const resetNotWalls = () => {
-    for (c = 0; c < titleColumnCount; c++) {
-        for (r = 0; r < titleRowCount; r++) {
+    for (c = 0; c < tileColumnCount; c++) {
+        for (r = 0; r < tileRowCount; r++) {
             if (tiles[c][r].state == 'w')  {
-                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'w'}
+                tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'w'}
             } else {
-                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+                tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'e'}
             }
         }
     }
     tiles[0][0].state = 's'
-    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+    tiles[tileColumnCount-1][tileRowCount-1].state = 'f'
 
     output.innerHTML = ''
 }
@@ -239,23 +252,23 @@ const resetNotWalls = () => {
 const randomFill = () => {
     let fillPercent = document.getElementById('fillPercent')
     let fill = fillPercent.options[fillPercent.selectedIndex].value
-    for (c = 0; c < titleColumnCount; c++) {
-        for (r = 0; r < titleRowCount; r++) {
+    for (c = 0; c < tileColumnCount; c++) {
+        for (r = 0; r < tileRowCount; r++) {
             if (Math.random()*100>(100-fill))  {
-                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'w'}
+                tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'w'}
             } else {
-                tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3),  state: 'e'}
+                tiles[c][r] = {x: c*(tileW + gap), y: r*(tileH + gap),  state: 'e'}
             }
         }
     }
-    // Leave the start and exit empty, to increase chance's
+    // Leave the start and exit empty, to (dramatically) increase chance of solution on higher fill.
     tiles[0][1].state='e'
     tiles[1][0].state='e'
     tiles[38][24].state='e'
     tiles[39][23].state='e'
 
     tiles[0][0].state = 's'
-    tiles[titleColumnCount-1][titleRowCount-1].state = 'f'
+    tiles[tileColumnCount-1][tileRowCount-1].state = 'f'
 
     output.innerHTML = `Grid filled with ${fill}% walls`
 }
